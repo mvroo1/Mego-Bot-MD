@@ -25,7 +25,7 @@ let handler = async (m, { conn }) => {
 }
 handler.help = ['profile [@user]']
 handler.tags = ['rg']
-handler.command = /^بروفايل|انا$/i
+handler.command = /^بروفايلي|انا$/i
 export default handler
 
 const more = String.fromCharCode(8206)
