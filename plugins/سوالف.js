@@ -1,14 +1,9 @@
-import { createHash } from 'crypto';
 let handler = async (m, { conn }) => {
-const name = conn.getName(m.sender);
-let a = './image.jpg';
-let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-let more = String.fromCharCode(8206);
-let done = '📯';
-  m.react(done);
-let teks = `
-${pickRandom([`
-┏────━━━━⊚📯⊚━━━━────┓
+  let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+  let videoUrl = 'https://telegra.ph/file/9ffe02eb52dd5a0fd3619.png'
+  let { name } = global.db.data.users[who]
+  m.react('📯')
+let str = `                 ┏────━━━━⊚📯⊚━━━━────┓
 *⧉┆↵ اهـــلا بــك/ي ${name}*
 *⧉┆📱: @${who.replace(/@.+/, '')}*
 *⧉┆↜أنـا اسـمـــي ❮ ˹غـوكـو˼ ❯*
@@ -97,15 +92,17 @@ ${pickRandom([`
 ✦═━━☆━ـ❃ ⊰ ⛩ ⊱ ❃ـ━☆━━═✦
 *ل إلــغــاء تــنــشــيــط الــبــوت فــي هــذه الــمــجــمــوعــة 🛑*\n*اكــتــب .بــانــد*
           *.¸¸ ❝˼𝗚𝗼𝗸𝘂᯽𝐵𝑂𝑇˼❝ ¸¸.*
-*┗────━━━━⊚📯⊚━━━━────┛*`])}
-`.trim()
-conn.sendFile(m.chat, a, null, teks, m, null, { mentions: [who] })}
+*┗────━━━━⊚📯⊚━━━━────┛*
+`
+  conn.sendMessage(m.chat, {
+           video: { url: videoUrl }, caption: str,
+     mentions: [m.sender,global.conn.user.jid],
+     gifPlayback: true,gifAttribution: 0
+       }, { quoted: m });
+   };
 
-handler.help = ['']
-handler.command = ['سواليف','سوالف'];
+handler.help = ['main']
+handler.tags = ['group']
+handler.command = ['سوالف']
 
 export default handler
-
-function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
