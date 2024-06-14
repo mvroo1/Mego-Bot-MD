@@ -26,5 +26,5 @@ ${sn}`;
 };
 handler.help = ['profile [@user]'];
 handler.tags = ['xp'];
-handler.command = /^بروفايل|بروفايلي?$/i;
+handler.command = /^مستوى|مستواي?$/i;
 export default handler;
