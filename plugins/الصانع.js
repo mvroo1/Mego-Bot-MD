@@ -1,6 +1,9 @@
-let handler = async (m, { conn, usedPrefix, usedPrefix: _p, __dirname, text, isPrems })  => {
-const caption =`
-『𝑮𝒐𝒌𝒖🇾🇪🫀🇵🇸』
+let handler = async (m, { conn }) => {
+  let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+  let videoUrl = 'https://telegra.ph/file/a82beae64b9496da6eba9.png'
+  let { name } = global.db.data.users[who]
+  m.react('👨🏻‍💻')
+let str = `                 『𝑮𝒐𝒌𝒖🇾🇪🫀🇵🇸』
 *· · • • • • ✦ • • • • · ·*
 *⌬ ❛╏ اهلا,* ${name}⁩
 *⌬ ❛╏ الوقت:${wib}
@@ -22,23 +25,18 @@ https://chat.whatsapp.com/EbzeqqSjqsMI2oDrjSdT3g
  -----------------------------
   ⌬ | *𝚈𝙾𝚄𝚃𝚄𝙱𝙴*:https://www.youtube.com/@user-to2qq1ji1r
   ⌬ | *𝙸𝙽𝚂𝚃𝙰𝙶𝚁𝙰𝙼*:https://www.instagram.com/mrwbryh?igsh=MWxwZ2o4N2NkMHN5YQ==
-  ----------------------------- 
+  -----------------------------  
+                    ✥━─━⌬ 𝑮𝒐𝒌𝒖_𝒃𝒐𝒕 ⌬━─━✥
 `
+  conn.sendMessage(m.chat, {
+           video: { url: videoUrl }, caption: str,
+     mentions: [m.sender,global.conn.user.jid],
+     gifPlayback: true,gifAttribution: 0
+       }, { quoted: m });
+   };
 
+handler.help = ['main']
+handler.tags = ['group']
+handler.command = ['الصانع']
 
-await conn.sendMessage( m.chat, {
-        video: {
-          url: 'https://telegra.ph/file/eeb2e29a434b5dad1a36d.mp4'
-        },
-        caption: caption,
-        gifPlayback: true,
-        gifAttribution: Math.floor( Math.random( ) * 2 ) + 1
-      }, {
-        quoted: m
-      } );
-}
-
-handler.help = ['allmenu']
-handler.tags = ['main']
-handler.command = ['الصانع'] 
 export default handler
