@@ -1,6 +1,6 @@
 let handler = async (m, { conn }) => {
   let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-  let videoUrl = 'https://telegra.ph/file/d3f644175fc8ec076cb69.mp4'
+  let videoUrl = 'https://telegra.ph/file/516515c1a861abdb0e7dd.mp4'
   let { name } = global.db.data.users[who]
   m.react('👑')
 let str = `                  ✥━─━⌬ 𝑮𝒐𝒌𝒖_𝒃𝒐𝒕 ⌬━─━✥
@@ -28,7 +28,7 @@ let str = `                  ✥━─━⌬ 𝑮𝒐𝒌𝒖_𝒃𝒐𝒕 ⌬�
 ❏..🎖╎❯ .المميزين⌉
 ❏..🏃‍♂️╎❯ .تسريع⌉
 ❏..🗞╎❯ .نشر⌉
-❐..💀╎❯ .اعدام⌉
+❐..💀╎❯ .هاك⌉
                     ✥━─━⌬ 𝑮𝒐𝒌𝒖_𝒃𝒐𝒕 ⌬━─━✥
 `
   conn.sendMessage(m.chat, {
