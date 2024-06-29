@@ -18,7 +18,7 @@ const handler = async (m, {conn, args: [effect], text: txt, usedPrefix, command,
 };
 handler.help = ['logos'];
 handler.tags = ['nulis'];
-handler.command = /^(logo|تصاميم|logos2)$/i;
+handler.command = /^(logo|صمملي|logos2)$/i;
 export default handler;
 
 var effects = [
