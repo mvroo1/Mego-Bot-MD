@@ -6,7 +6,7 @@ const Config = require('../config');
 if (Config.WORKTYPE == 'private') {
 
     Asena.addCommand({pattern: 'anime', fromMe: true, desc: 'صوره انمي عشوائية 🔀'}, (async (message, match) => {
-
+    handler.command = ['صور-انمي','صور'] 
     var r_text = new Array ();
 
     r_text[0] = "https://i.ibb.co/FwPP04q/images.jpg";
