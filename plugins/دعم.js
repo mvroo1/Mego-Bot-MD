@@ -2,7 +2,7 @@ let handler = async (m, { conn, command, text }) => {
 let love = `
 *لدعم البوت تستطيع ان تفعل:-*
 *1_تستطيع دخول قروب دعم البوت لدعمه.↯↯*
-**
+*https://whatsapp.com/channel/0029Vai5lsFCRs1tg6jJ152f*
 
 *2_وتستطيع ان تتابع البوت على الانستا:-*
 *https://www.instagram.com/mrwbryh?igsh=MWxwZ2o4N2NkMHN5YQ==* 
