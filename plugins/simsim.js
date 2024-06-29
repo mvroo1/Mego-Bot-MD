@@ -39,7 +39,7 @@ conn.reply(m.chat, lolll.text, m )
 }
 handler.help = ['simi']
 handler.tags = ['juegos']
-handler.command = /^((sim)?simi|bot|ه|cortana|curio(sity)?)|سمسم$/i
+handler.command = /^((sim)?simi|bot|cortana|curio(sity)?)|سمسم$/i
 
 
 export default handler
