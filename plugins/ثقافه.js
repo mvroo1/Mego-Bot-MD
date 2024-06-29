@@ -1,42 +1,33 @@
-import fs from 'fs'
-let timeout = 60000
-let poin = 500
-let dia = 1
-let handler = async (m, { conn, usedPrefix }) => {
-conn.tekateki = conn.tekateki ? conn.tekateki : {}
-let id = m.chat
-if (id in conn.tekateki) {
-conn.reply(m.chat, '*يجب الرد على سؤال قبل الاسئلة الاخرى*\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n𝑮𝒐𝒌𝒖 𝙱𝙾𝚃', conn.tekateki[id][0])
-throw false
+let timeout = 40000
+let poin = 5000
+let handler = async (m, { conn, command, usedPrefix }) => {
+    conn.tokitoki = conn.tokitoki ? conn.tokitoki : {}
+    let id = m.chat
+    if (id in conn.tokitoki) {
+        conn.reply(m.chat, '❐┃لم يتم الاجابة علي السؤال بعد┃❌ ❯', conn.tokitoki[id][0])
+        throw false
+    }
+    let src = await (await fetch('https://github.com/Amrobraih/amro/blob/master/src/game/culture.json')).json()
+    let json = src[Math.floor(Math.random() * src.length)]
+    let caption = `
+*╮──────────────────⟢ـ*
+*❐↞┇الـوقـت⏳↞ ${(timeout / 1000).toFixed(2)} ثـانـيـة┇❯*
+*❐↞┇الـجـائـزة💰↞ +${poin} ذهــب┇❯*
+*╯──────────────────⟢ـ*
+> *قم بالرد على الرسالة بالإجابة*
+> *إسـتـخـدم امـر [ .لفل ] للإستطلاع على الذهب الخاص بك*
+> *🌏『𝑮𝒐𝒌𝒖🇾🇪🫀🇵🇸』🌍*`.trim()
+    conn.tokitoki[id] = [
+        await conn.sendFile(m.chat, json.img, '', caption, m),
+        json,
+        setTimeout(() => {
+            if (conn.tokitoki[id]) conn.reply(m.chat, `*❮ ⌛┇انتــهــى الــوقــت┇⌛❯*\n*❖↞┇الاجـابـة✅↞*  *${json.name}* *┇❯*`, conn.tokitoki[id][0])
+            delete conn.tokitoki[id]
+        }, timeout)
+    ]
 }
-let tekateki = JSON.parse(fs.readFileSync(`./src/game/culture.json`))
-let json = tekateki[Math.floor(Math.random() * tekateki.length)]
-let _clue = json.response
-let clue = _clue.replace(/[A-Za-z]/g, '_')
-let caption = `سـؤال الثقافة العامة ◉
+handler.help = ['ثقافه']
+handler.tags = ['لعبة']
+handler.command = /^ثقافه$/i
 
-⎔ ⋅ ──━ •﹝🌏﹞• ━── ⋅ ⎔
-
-السؤال﹝*${json.question}*﹞
-
-الجائزة﹝*+500 خبرة و 1 الماسه💎*﹞
-
-المدة﹝*${(timeout / 1000).toFixed(2)} ثانية*﹞
-
-⎔ ⋅ ──━ •﹝🌏﹞• ━── ⋅ ⎔
-${gt}`.trim()
-conn.tekateki[id] = [
-await conn.reply(m.chat, caption, m), json, 
-poin,
-setTimeout(async () => {
-if (conn.tekateki[id]) await conn.reply(m.chat, `┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-*انتهى الوقت الجواب هو*
-*※【﻿${json.response} 】※*
-┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-${gt}`, conn.tekateki[id][0])
-delete conn.tekateki[id]
-}, timeout)]}
-handler.help = ['culture']
-handler.tags = ['game']
-handler.command = /^(ثقافة)$/i
 export default handler
