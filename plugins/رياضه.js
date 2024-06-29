@@ -1,38 +1,33 @@
-import fs from 'fs';
-
-let timeout = 60000;
-let poin = 500;
-
-let handler = async (m, { conn, usedPrefix }) => {
-    conn.tekateki = conn.tekateki ? conn.tekateki : {};
-    let id = m.chat;
-    if (id in conn.tekateki) {
-        conn.reply(m.chat, '❐┃لم يتم الاجابة علي السؤال بعد┃❌ ❯', conn.tekateki[id][0]);
-        throw false;
+let timeout = 40000
+let poin = 5000
+let handler = async (m, { conn, command, usedPrefix }) => {
+    conn.tokitoki = conn.tokitoki ? conn.tokitoki : {}
+    let id = m.chat
+    if (id in conn.tokitoki) {
+        conn.reply(m.chat, '❐┃لم يتم الاجابة علي السؤال بعد┃❌ ❯', conn.tokitoki[id][0])
+        throw false
     }
-    let tekateki = JSON.parse(fs.readFileSync(`./src/game/رياضه.json`));
-    let json = tekateki[Math.floor(Math.random() * tekateki.length)];
-    let _clue = json.response;
-    let clue = _clue.replace(/[A-Za-z]/g, ''); // Fixed this line
+    let src = await (await fetch('https://github.com/Amrobraih/amro/blob/master/src/game/Football.json')).json()
+    let json = src[Math.floor(Math.random() * src.length)]
     let caption = `
-ⷮ ${json.question}
-
-❐↞┇الـوقـت⏳↞ ${(timeout / 1000).toFixed(2)}┇
-❐↞┇الـجـائـزة💰↞ ${poin} نقاط┇
-『𝗚𝗼𝗸𝘂-𝘽𝙊𝙏』
-`.trim();
-    conn.tekateki[id] = [
-       await conn.reply(m.chat, caption, m),
-        json, poin,
-        setTimeout(async () => {
-            if (conn.tekateki[id]) await conn.reply(m.chat, `❮ ⌛┇انتهي الوقت┇⌛❯\n ❐↞┇الاجـابـة✅↞ ${json.response}┇`, conn.tekateki[id][0]);
-            delete conn.tekateki[id];
+*╮──────────────────⟢ـ*
+*❐↞┇الـوقـت⏳↞ ${(timeout / 1000).toFixed(2)} ثـانـيـة┇❯*
+*❐↞┇الـجـائـزة💰↞ +${poin} ذهــب┇❯*
+*╯──────────────────⟢ـ*
+> *قم بالرد على الرسالة بالإجابة*
+> *إسـتـخـدم امـر [ .لفل ] للإستطلاع على الذهب الخاص بك*
+> *⚽『𝑮𝒐𝒌𝒖🇾🇪🫀🇵🇸』⚽*`.trim()
+    conn.tokitoki[id] = [
+        await conn.sendFile(m.chat, json.img, '', caption, m),
+        json,
+        setTimeout(() => {
+            if (conn.tokitoki[id]) conn.reply(m.chat, `*❮ ⌛┇انتــهــى الــوقــت┇⌛❯*\n*❖↞┇الاجـابـة✅↞*  *${json.name}* *┇❯*`, conn.tokitoki[id][0])
+            delete conn.tokitoki[id]
         }, timeout)
-    ];
-};
+    ]
+}
+handler.help = ['رياضة']
+handler.tags = ['لعبة']
+handler.command = /^رياضة|رياضه$/i
 
-handler.help = ['miku'];
-handler.tags = ['game'];
-handler.command = /^(رياضه)$/i;
-
-export default handler;
+export default handler
