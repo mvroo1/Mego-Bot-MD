@@ -1,99 +1,176 @@
-   import { createHash } from 'crypto'
-   import PhoneNumber from 'awesome-phonenumber'
-   import { canLevelUp, xpRange } from '../lib/levelling.js'
-   import fetch from 'node-fetch'
-   import fs from 'fs'
-   const { levelling } = '../lib/levelling.js'
-   import moment from 'moment-timezone'
-   import { promises } from 'fs'
-   import { join } from 'path'
-   const time = moment.tz('Egypt').format('HH')
-   let wib = moment.tz('Egypt').format('HH:mm:ss')
-   //import db from '../lib/database.js'
+//Copyright ©JOANIMI/KILLUA
+//https://whatsapp.com/channel/0029Vab5oDNElagpHtJjmT0B
 
-   let handler = async (m, { conn, usedPrefix, command}) => {
-       let d = new Date(new Date + 3600000)
-       let locale = 'ar'
-       let week = d.toLocaleDateString(locale, { weekday: 'long' })
-       let date = d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
-       let _uptime = process.uptime() * 1000
-       let uptime = clockString(_uptime)
-   let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-   if (!(who in global.db.data.users)) throw `✳️ لم يتم العثور على المستخدم في قاعدة البيانات الخاصة بي`
-   let videoUrl = 'https://telegra.ph/file/3782975aafc54e78e9d0c.mp4'
-   let user = global.db.data.users[who]
-   let { name, exp, diamond, lastclaim, registered, regTime, age, level, role, warn } = global.db.data.users[who]
-   let { min, xp, max } = xpRange(user.level, global.multiplier)
-   let username = conn.getName(who)
-   let math = max - xp
-   let prem = global.prems.includes(who.split`@`[0])
-   let sn = createHash('md5').update(who).digest('hex')
-   let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length 
-   let more = String.fromCharCode(8206)
-   let readMore = more.repeat(850) 
-  m.react('📁')
-   let taguser = '@' + m.sender.split("@s.whatsapp.net")[0]
-   let str = `
-      ┓━ ╼━━━╃⌬〔 *𝙼𝚅𝚁𝙾 𝙱𝙾𝚃* 〕⌬╄━━━╾ ━┏
-*مـرحــبـا ${taguser} 👋🏻*
+import { prepareWAMessageMedia, generateWAMessageFromContent, getDevice } from '@whiskeysockets/baileys'
 
-≼👤≽ مـعـلــومـات الـبــوت╿↶
-━ ── • 🧛🏻‍♂️ • ── ━
-*اســم الـبــوت  𝙼𝚅𝚁𝙾 お ‘*
-*منـصـه التـشغيــل 【.هيروكو.】*
-*وقت التشغيل : ${uptime}*
-*اليوم : ${week}*
-*التاريخ : ${date}*
-*مطوري : wa.me/201208386317*
-⋄━───═◞⬪🧛🏻‍♂️⬪◟═───━⋄
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ اذا لم يرد عليك البوت عليك ارسال*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ صلح*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ تصليح*
-━ ── • 🧛🏻‍♂️ • ── ━
-*⇊ قوائم بوت مارو المطلوبه ⇊*
-.....................
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ ذكاءاصطناعي*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الجروب*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الانمي*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الاعضاء*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الدين*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ البنك*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ التحميلات*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الايديت*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الادوات*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ التحويلات*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الترفيه*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ الاصوات*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ المطور*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ تصاميم*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ قائمتي*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ المعرف*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ السورس*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ قوانين*
-━ ── • 🧛🏻‍♂️ • ── ━
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ هلا اذا اردت الوصول اللي الاوامر مره واحده كامله ارسل*
+const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
+    const device = await getDevice(m.key.id);
+    const mentionId = m.key.participant || m.key.remoteJid;
 
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ المهام*
+    if (device !== 'desktop' || device !== 'web') {      
+        var joanimiimg = await prepareWAMessageMedia({ image: {url: 'https://telegra.ph/file/e7f49bd7c3aad2f429044.jpg'}}, { upload: conn.waUploadToServer })
+        const interactiveMessage = {
+            body: { text: `test`.trim() },
+            footer: { text: `*𝙏𝙝𝙚𝙈𝙫𝙧𝙤-𝘽𝙤𝙩*`.trim() },  
+            header: {
+                title: `*┃━━━━━⬣𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⬣━━━━━┃*\n\n*◞❐نورت يا حب بوت مارو🤺🔥*\n\n*◞❐ تفضل القائمة يا  :* @${mentionId.split('@')[0]}\n\n*◞❐اسم البوت : بوت مـارو*\n\n*◞❐موقع التنصيب : heroku*\n\n*◞❐البوت يعمل في الخاص والجروبات*\n\n*◞❐يمنع شتم البوت*\n\n*┃━━━━━⬣𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⬣━━━━━┃*`,
+                subtitle: ``,
+                hasMediaAttachment: true,
+                imageMessage: joanimiimg.imageMessage,
+            },
+            nativeFlowMessage: {
+  						buttons: [
+  							{
+  								name: 'single_select',
+  						  	buttonParamsJson: JSON.stringify({
+  						  		title: '⌝قـائـمـه الاوامـر⌞',
+  						  		sections: [
+  						  			{
+  						  				title: 'List',
+  							  	    highlight_label: 'ON',
+  						  		    rows: [
+  						  		    	{
+  						  		    		header: '【..≼قــســم الجروبات≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الجروبات≽..】',
+  								    		  id: '.الجروب'
+  						  		    	}
+  						  		    ]
+  						  			},
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الاعضاء≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الاعضاء≽..】',
+  								    		  id: '.الاعضاء'
+  						  		    	}
+  						  				]
+  						        	},
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الانــمـــي≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الانــمـــي≽..】',
+  								    		  id: '.انيمي'
+  						  		    	}
+  						  				]
+                                    },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الترفيه≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الترفيه≽..】',
+  								    		  id: '.الترفيه'
+  						  		    	}
+  						  				]
+                                        },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الايديت والصور≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الايديت والصور≽..】',
+  								    		  id: '.الايديت'
+  						  		    	}
+  						  				]
+                                        },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم التحويلات≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم التحويلات≽..】',
+  								    		  id: '.التحويلات'
+  						  		    	}
+  						  				]
+                                        },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الادوات≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الادوات≽..】',
+  								    		  id: '.الاداوات'
+  						  		    	}
+  						  				]
+                                        },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الدين≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الدين≽..】',
+  								    		  id: '.الدين'
+  						  		    	}
+  						  				]
+                                        },
+  						  			{
+  						  				highlight_label: 'ON',
+  						  				rows: [
+  						  					{
+  						  		    		header: '【..≼قــســم الذكاء الاصطناعي≽..】',
+  										      title: '𝙼𝚅𝚁𝙾-𝙱𝙾𝚃',
+  									    	  description: '【..≼قــســم الذكاء الاصطناعي≽..】',
+  								    		  id: '.ذكاءاصطناعي'
+  						  		    	}
+  						  				]
+  						  			}
+  						  		]
+  						  	})
+  							},
+                              {
+                                  name: 'quick_reply',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: 'quick_reply',
+                                      id: `message`
+                                  })
+                              },
+                              {
+                                  name: 'cta_url',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: 'منصاتي🤺🔥',
+                                      url: 'https://www.atom.bio/safrotbob-376',
+                                      merchant_url: ''
+                                  })
+                              },
+                              {
+                                  name: 'cta_call',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: 'call',
+                                      id: 'message'
+                                  })
+                              },
+                              
+  			  		],
+                messageParamsJson: ''
+            }
+        };        
 
-⋄━───═◞⬪قوانين⬪◟═───━⋄
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ ممنوع سب البوت لانك سبيت البوت = سبيت المطور*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ تمتع بالبوت ولا تكتر اسبام للبوت اذا كان لديك مشكله او تريد اضافه اوامر اخري جديده تواصل مع المطور*
-*🧛🏻‍♂️⃝🇪🇬️⤺┇❯ المطور wa.me/201208386317*
-*┛━ ╼━━━╃⌬〔 𝙼𝚅𝚁𝙾 𝙱𝙾𝚃 〕⌬╄━━━╾ ━┗*
-   `.trim()
-       conn.sendMessage(m.chat, {
-           video: { url: videoUrl }, caption: str,
-     mentions: [m.sender,global.conn.user.jid],
-     gifPlayback: true,gifAttribution: 0
-       }, { quoted: m });
-   };
-   handler.help = ['main']
-   handler.command = /^(الاوامر|menu|أوامر|اوامر)$/i
+        let msg = generateWAMessageFromContent(m.chat, {
+            viewOnceMessage: {
+                message: {
+                    interactiveMessage,
+                },
+            },
+        }, { userJid: conn.user.jid, quoted: m })
+        msg.message.viewOnceMessage.message.interactiveMessage.contextInfo = { mentionedJid: [mentionId] };
+        conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
 
-   export default handler
-   function clockString(ms) {
-       let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-       let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-       let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-       return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')}
-      
+    } else {
+        conn.sendFile(m.chat, 'JoAnimi•Error.jpg', m);      
+    }    
+};
+handler.help = ['imgboton'];
+handler.tags = ['For Test'];
+handler.command = /^(اوامر|الاوامر|أوامر|الأوامر|menu)$/i;
+export default handler;
