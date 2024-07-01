@@ -14,7 +14,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 }
 handler.help = ['gitclone <url>']
 handler.tags = ['downloader']
-handler.command = ['جيت-هاب|github1'] 
+handler.command = ['جيت-هاب', 'github1'] 
 handler.credit = true
 
 export default handler
