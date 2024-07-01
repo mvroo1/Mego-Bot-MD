@@ -10,7 +10,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
     if (device !== 'desktop' || device !== 'web') {      
         var joanimiimg = await prepareWAMessageMedia({ image: {url: 'https://telegra.ph/file/e7f49bd7c3aad2f429044.jpg'}}, { upload: conn.waUploadToServer })
         const interactiveMessage = {
-            body: { text: `.`.trim() },
+            body: { text: `test`.trim() },
             footer: { text: `*𝙏𝙝𝙚𝙈𝙫𝙧𝙤-𝘽𝙤𝙩*`.trim() },  
             header: {
                 title: `*⎔⋅• ┏╼╃✦⊰⟦𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⟧⊱✦╄╾┓ •⋅⎔*\n\n*◞❐نورت يا حب بوت مارو🤺🔥*\n\n*◞❐ تفضل القائمة يا  :* @${mentionId.split('@')[0]}\n\n*◞❐اسم البوت : بوت مـارو*\n\n*◞❐موقع التنصيب : heroku*\n\n*◞❐البوت يعمل في الخاص والجروبات*\n\n*◞❐يمنع شتم البوت*\n\n*◞❐لينك المطور : https://tiny.one/42kpap54*\n\n*⎔⋅• ┗╼╃✦⊰⟦𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⟧⊱✦╄╾┛ •⋅⎔*`,
@@ -23,7 +23,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
   							{
   								name: 'single_select',
   						  	buttonParamsJson: JSON.stringify({
-  						  		title: '【..≼قـائـمـه الاوامـر≽..】',
+  						  		title: '≼قـائـمـه الاوامـر≽',
   						  		sections: [
   						  			{
   						  				title: 'List',
@@ -217,7 +217,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
                               {
                                   name: 'cta_url',
                                   buttonParamsJson: JSON.stringify({
-                                      display_text: '【..≼كـل الـلـي يـخـصـنـي≽..】',
+                                      display_text: '≼كـل الـلـي يـخـصـنـي≽',
                                       url: 'https://www.atom.bio/m_vro1',
                                       merchant_url: ''
                                   })
