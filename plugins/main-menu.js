@@ -1,104 +1,264 @@
-   import { createHash } from 'crypto'
-   import PhoneNumber from 'awesome-phonenumber'
-   import { canLevelUp, xpRange } from '../lib/levelling.js'
-   import fetch from 'node-fetch'
-   import fs from 'fs'
-   const { levelling } = '../lib/levelling.js'
-   import moment from 'moment-timezone'
-   import { promises } from 'fs'
-   import { join } from 'path'
-   const time = moment.tz('Egypt').format('HH')
-   let wib = moment.tz('Egypt').format('HH:mm:ss')
-   //import db from '../lib/database.js'
+//Copyright ©JOANIMI/KILLUA
+//https://whatsapp.com/channel/0029Vab5oDNElagpHtJjmT0B
 
-   let handler = async (m, { conn, usedPrefix, command}) => {
-       let d = new Date(new Date + 3600000)
-       let locale = 'ar'
-       let week = d.toLocaleDateString(locale, { weekday: 'long' })
-       let date = d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
-       let _uptime = process.uptime() * 1000
-       let uptime = clockString(_uptime)
-   let who = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-   if (!(who in global.db.data.users)) throw `✳️ لم يتم العثور على المستخدم في قاعدة البيانات الخاصة بي`
-   let videoUrl = 'https://telegra.ph/file/93c989256624736ebd663.mp4'
-   let user = global.db.data.users[who]
-   let { name, exp, diamond, lastclaim, registered, regTime, age, level, role, warn } = global.db.data.users[who]
-   let { min, xp, max } = xpRange(user.level, global.multiplier)
-   let username = conn.getName(who)
-   let math = max - xp
-   let prem = global.prems.includes(who.split`@`[0])
-   let sn = createHash('md5').update(who).digest('hex')
-   let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length 
-   let more = String.fromCharCode(8206)
-   let readMore = more.repeat(850) 
-  m.react('📁')
-   let taguser = '@' + m.sender.split("@s.whatsapp.net")[0]
-   let str = `
-*⎔⋅• ┏╼╃✦⊰⟦﷽⟧⊱✦╄╾┓ •⋅⎔*
-*مـرحــبـا ${taguser} 👋🏻*
+import { prepareWAMessageMedia, generateWAMessageFromContent, getDevice } from '@whiskeysockets/baileys'
 
-≼👤≽ مـعـلــومـات الـبــوت╿↶
-*━ ── • ꕤ • ── ━*
-*اســم الـبــوت  𝑮𝒐𝒌𝒖 お ‘* 
-*منـصـه التـشغيــل 【.هيروكو.】*
-*وقت التشغيل : ${uptime}*
-*اليوم : ${week}*
-*التاريخ : ${date}*
-*مطوري* : wa.me/+967774318278
-*⋄━───═◞⬪⇊⬪◟═───━⋄*
-*اذا لم يرد عليك البوت عليك ارسال*
-*⚡⇇.صلح*
-*⚡⇇.تصليح*
-*━ ── • ꕤ • ── ━*
-⇊ قوائم بوت غوكو المطلوبه ⇊
-*· • • ━ ╃✦⊰ ⌝🔰⌞ ⊱✦╄ ━ • • ·*
-*🤖⇇.ذكاءاصطناعي*
-*⛩️⇇.الجروب*
-*🔮⇇.الانمي*
-*👥⇇.الاعضاء*
-*🕋⇇.الدين*
-*💎⇇.البنك*
-*📥⇇.التحميلات*
-*🎞⇇.الايديت*
-*⚙️⇇.الادوات*
-*♻️⇇.التحويلات*
-*🎮⇇.الترفيه*
-*🔊⇇.الاصوات*
-*👑⇇.المطور*
-*💵⇇.اشتراك*
-*👨🏻‍💻⇇.الصانع*
-*💢⇇.تصاميم*
-*📌⇇.قائمتي*
-*💫⇇.رياكشنات*
-*⚡⇇.المعرف*
-*💯⇇.السورس*
-*📮⇇.قوانين*
-━ ── • ꕤ • ── ━
-> *👋🏻 هلا اذا اردت الوصول اللي الاوامر مره واحده كامله ارسل* 
+const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
+    const device = await getDevice(m.key.id);
+    const mentionId = m.key.participant || m.key.remoteJid;
 
-*⧉【📜┋.المهام】*
-> *و اذا اردت الاوامر مع الشرح استخدم*
-*⧉【📜┋.الشرح】*
-⋄━───═◞⬪قوانين⬪◟═───━⋄
-❏╎❯ > ممنوع سب البوت لانك سبيت البوت = سبيت المطور  
-❏╎❯ > تمتع بالبوت ولا تكتر اسبام للبوت اذا كان لديك مشكله او تريد اضافه اوامر اخري جديده تواصل مع المطور 
-❏╎❯ > المطور wa.me/+967774318278 
-❐╎❯ > تذكير فلسطين حرة🇵🇸🫀🇾🇪 
-> قـنـات البـوت:https://whatsapp.com/channel/0029Vai5lsFCRs1tg6jJ152f
-*⎔⋅• ┗╼╃✦⊰⟦𝑮𝒐𝒌𝒖_𝒃𝒐𝒕⟧⊱✦╄╾┛•⋅⎔*
-   `.trim()
-       conn.sendMessage(m.chat, {
-           video: { url: videoUrl }, caption: str,
-     mentions: [m.sender,global.conn.user.jid],
-     gifPlayback: true,gifAttribution: 0
-       }, { quoted: m });
-   };
-   handler.help = ['main']
-   handler.command = /^(الاوامر|menu|أوامر|اوامر)$/i
+    if (device !== 'desktop' || device !== 'web') {      
+        var joanimiimg = await prepareWAMessageMedia({ image: {url: 'https://telegra.ph/file/f8e57afecb5ffedb78dac.jpg'}}, { upload: conn.waUploadToServer })
+        const interactiveMessage = {
+            body: { text: `test`.trim() },
+            footer: { text: `*𝑮𝑶𝑲𝑼-𝑩𝑶𝑻*`.trim() },  
+            header: {
+                title: `*⎔⋅• ┏╼╃✦⊰⟦﷽⟧⊱✦╄╾┓ •⋅⎔*\n*⌝اهــلاً ╎ بــك فـي بـوت غــوكــو╎⌞*\n*━─╾╃⊱✦⊰🤖⊱✦⊰╄╼─━*\n> *🐉✬⃝╿↵ مرحــبـا ⌊@${mentionId.split('@')[0]}⌉*\n*── • ◈ • ──*\n> *🐉✬⃝╿حط قبل كل امر : ⌊ . ⌉*\n> *🐉✬⃝╿مـطـوري:https://wa.me/967735038560*\n> *🐉✬⃝╿الرابط:https://tiny.one/2e77c2bp*\n> *🐉✬⃝╿الـبــوت لـجــروبـات بـس*\n*· • • ━ ╃✦⊰ ⌝🔰⌞ ⊱✦╄ ━ • • ·*\n*⌝ ╎مـعـلـومـات الـبـوت╎⌞*\n*━─╾╃⊱✦⊰📋⊱✦⊰╄╼─━*\n*⧉【✨┋أسـم الـبـوت: 𝑮𝒐𝒌𝒖⚡】*\n*⧉【💻┋الـمـنـصـة:𝑯𝑬𝑹𝑶𝑲𝑼】*\n*⧉【⏰┋وقـت الـتـشـغـيـل:${uptime}】*\n*⧉【👥┋إجـمـالـي الـمـسـتخـدمـيـن:${rtotal}】*\n*· • • ━ ╃✦⊰ ⌝🔰⌞ ⊱✦╄ ━ • • ·*\n> *⧉【قـنـات الـبوت┋https://whatsapp.com/channel/0029Vai5lsFCRs1tg6jJ152f】*\n> *⧉【📢┋.ابلاغ】*\n> *هاذا الامر اذا حدث شيء للبوت.*\n*اختار من الازرار أسفل 👇*\n> *𝑮𝑶𝑲𝑼 𝑩𝑶𝑻.BY:𝜜𝑴𝑹𝑶 𝑲𝑯𝜜𝑳𝑰𝑫🇾🇪🫀🇵🇸*`,
+                subtitle: ``,
+                hasMediaAttachment: true,
+                imageMessage: joanimiimg.imageMessage,
+            },
+            nativeFlowMessage: {
+                                                  buttons: [
+                                                          {
+                                                                  name: 'single_select',
+                                                            buttonParamsJson: JSON.stringify({
+                                                                    title: '⌝قـائـمـه الاوامـر⌞',
+                                                                    sections: [
+                                                                            {
+                                                                                    title: 'List',
+                                                                        highlight_label: 'ON',
+                                                                        rows: [
+                                                                                {
+                                                                                        header: '⧉【قــســـم الــجـروب🔕】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الجروب',
+                                                                                        id: '.الجروب'
+                                                                                }
+                                                                        ]
+                                                                            },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الاعــضـاء👥】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الاعضاء',
+                                                                                        id: '.الاعضاء'
+                                                                                }
+                                                                                    ]
+                                                                  },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الانــمــي🔮】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الانمي',
+                                                                                        id: '.الانمي'
+                                                                                }
+                                                                                    ]
+                                    },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الــتـرفـيـة🎮】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الالعاب',
+                                                                                        id: '.الترفيه'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الايـديــت 🎞】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الايديات',
+                                                                                        id: '.الايديت'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســـم الـتـحـويلات♻️】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر التحويلات',
+                                                                                        id: '.التحويلات'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الادوات ⚙️】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الادوات',
+                                                                                        id: '.الادوات'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الــديــن🕋】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الدين',
+                                                                                        id: '.الدين'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الذكـاء الاصطناعيّ🤖】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر البوت',
+                                                                                        id: '.ذكاءاصطناعي'
+                                                                                }
+                                                                                    ]
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الـتـحـمـيـلات📥】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر التحميل و البحث',
+                                                                                        id: '.التحميلات'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الــبـنـك🏦】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر البنك',
+                                                                                        id: '.البنك'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الـمــطـور👑】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر المطور',
+                                                                                        id: '.قائمتي'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الـريـاكـشـنـات🪩】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الرياكشنات',
+                                                                                        id: '.رياكشنات'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الاصــوات🔊】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر الاصوات',
+                                                                                        id: '.الاصوات'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الـتـصـامـيـم⚡】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك اوامر التصاميم',
+                                                                                        id: '.تصاميم'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الــشــرح📜】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك الاوامر مع الشرح',
+                                                                                        id: '.الشرح'
+                                                                                }
+                                                                                    ] 
+                                        },
+                                                                            {
+                                                                                    highlight_label: 'ON',
+                                                                                    rows: [
+                                                                                            {
+                                                                                        header: '⧉【قــســم الــمــهــام📜】',
+                                                                                        title: '𝑮𝑶𝑲𝑼-𝑩𝑶𝑻',
+                                                                                        description: 'بيجيب لك الاوامر كامل',
+                                                                                        id: '.المهام'
+                                                                                }
+                                                                                    ]
+                                                                            }
+                                                                    ]
+                                                            })
+                                                          },
+                              {
+                                  name: 'quick_reply',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: '⧉【💫الـــاشــتـراك بـالـبـوت💫】',
+                                      id: `.اشتراك`
+                                  })
+                              },
+                              {
+                                  name: 'cta_url',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: '⧉【🔰قـنـات دعــم الـبـوت🔰】',
+                                      url: 'https://whatsapp.com/channel/0029Vai5lsFCRs1tg6jJ152f',
+                                      merchant_url: ''
+                                  })
+                              },
+                              {
+                                  name: 'cta_call',
+                                  buttonParamsJson: JSON.stringify({
+                                      display_text: '⧉【⚡الـــمــطور⚡】',
+                                      id: '.المطور'
+                                  })
+                              },
 
-   export default handler
-   function clockString(ms) {
-       let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-       let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-       let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-       return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')}
+                                            ],
+                messageParamsJson: ''
+            }
+        };        
+
+        let msg = generateWAMessageFromContent(m.chat, {
+            viewOnceMessage: {
+                message: {
+                    interactiveMessage,
+                },
+            },
+        }, { userJid: conn.user.jid, quoted: m })
+        msg.message.viewOnceMessage.message.interactiveMessage.contextInfo = { mentionedJid: [mentionId] };
+        conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
+
+    } else {
+        conn.sendFile(m.chat, 'JoAnimi•Error.jpg', m);      
+    }    
+};
+handler.help = ['imgboton'];
+handler.tags = ['For Test'];
+handler.command = /^(اوامر|الاوامر|أوامر|الأوامر|menu)$/i;
+export default handler;
