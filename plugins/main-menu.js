@@ -10,7 +10,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
     if (device !== 'desktop' || device !== 'web') {      
         var joanimiimg = await prepareWAMessageMedia({ image: {url: 'https://telegra.ph/file/e7f49bd7c3aad2f429044.jpg'}}, { upload: conn.waUploadToServer })
         const interactiveMessage = {
-            body: { text: `test`.trim() },
+            body: { text: `.`.trim() },
             footer: { text: `*𝙏𝙝𝙚𝙈𝙫𝙧𝙤-𝘽𝙤𝙩*`.trim() },  
             header: {
                 title: `*⎔⋅• ┏╼╃✦⊰⟦𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⟧⊱✦╄╾┓ •⋅⎔*\n\n*◞❐نورت يا حب بوت مارو🤺🔥*\n\n*◞❐ تفضل القائمة يا  :* @${mentionId.split('@')[0]}\n\n*◞❐اسم البوت : بوت مـارو*\n\n*◞❐موقع التنصيب : heroku*\n\n*◞❐البوت يعمل في الخاص والجروبات*\n\n*◞❐يمنع شتم البوت*\n\n*◞❐لينك المطور : https://tiny.one/42kpap54*\n\n*⎔⋅• ┗╼╃✦⊰⟦𝙼𝚅𝚁𝙾-𝙱𝙾𝚃⟧⊱✦╄╾┛ •⋅⎔*`,
@@ -183,7 +183,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
   						  				]
                                         },
                                     {
-  						  				highlight_label: '【..≼الـمـطـور فـقـط≽..】'',
+  						  				highlight_label: '≼الـمـطـور فـقـط≽'',
   						  				rows: [
   						  					{
   						  		    		header: '【..≼قــســم الـمـطـور≽..】',
@@ -194,7 +194,7 @@ const handler = async (m, { conn, text, usedPrefix: prefijo }) => {
   						  				]
                                         },
   						  			{
-  						  				highlight_label: '【..≼كـل اقـسـام الـبـوت≽..】'',
+  						  				highlight_label: '≼كـل اقـسـام الـبـوت≽',
   						  				rows: [
   						  					{
   						  		    		header: '【..≼جـمـيـع الاقـسـام≽..】',
